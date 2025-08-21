@@ -1,0 +1,24 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+Console.WriteLine("Hello, .NET Polyglot Notebook!");
+
+#!markdown
+
+#Chapter 01 - Hello, .NET Polyglot Notebook!</br>
+Mixing *rich* **text** and code is cool!
+
+#!csharp
+
+#!about
+
+#!csharp
+
+int number = 8;
+
+#!csharp
+
+Console.WriteLine($"The number is: {number}");
