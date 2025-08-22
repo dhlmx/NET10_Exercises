@@ -44,4 +44,3 @@ Console.WriteLine($"The variable {nameof(heightInMeters)} has the value {heightI
 Console.WriteLine($"The variable {nameof(egiptianHieroglyph)} has the value {egiptianHieroglyph}.");
 Console.WriteLine($"The variable {nameof(fullNameWithTabSeparator)} has the value {fullNameWithTabSeparator}.");
 Console.WriteLine($"The variable {nameof(filePath)} has the value {filePath}.");
-
