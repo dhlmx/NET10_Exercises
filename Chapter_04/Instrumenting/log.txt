@@ -1,0 +1,6 @@
+Debug says, I'm watching v2.0
+Trace says, I'm watching v2.0
+Trace error
+Trace warning
+Trace information
+Trace verbose
