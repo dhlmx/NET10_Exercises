@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.IO.Compression;
+using System.Xml;
 using static System.Console;
 using static System.Environment;
 using static System.IO.Path;
@@ -17,6 +18,7 @@ static void WorkWithText()
 
   WriteLine("{0} contains {1:N0} bytes.", arg0: textFile, arg1: new FileInfo(textFile).Length);
   WriteLine(File.ReadAllText(textFile));
+  WriteLine();
 }
 
 static void WorkWithXml()
@@ -61,7 +63,71 @@ static void WorkWithXml()
       }
     }
   }
+  WriteLine();
+}
+
+static void WorkWithCompression(bool useBrotli = true)
+{
+  string fileExt = useBrotli ? "brotli" : "gzip";
+  string filePath = Combine(CurrentDirectory, $"streams.{fileExt}");
+
+  FileStream file = File.Create(filePath);
+  Stream compressor;
+
+  if (useBrotli)
+  {
+    compressor = new BrotliStream(file, CompressionMode.Compress);
+  }
+  else
+  {
+    compressor = new GZipStream(file, CompressionMode.Compress);
+  }
+
+  using (compressor)
+  {
+    using XmlWriter xml = XmlWriter.Create(compressor);
+    xml.WriteStartDocument();
+    xml.WriteStartElement("callsigns");
+
+    foreach (string item in Viper.Callsigns)
+    {
+      xml.WriteElementString("callsign", item);
+    }
+  }
+
+  WriteLine("{0} contains {1:N0} bytes.", filePath, new FileInfo(filePath).Length);
+  WriteLine($"The compressed contents:");
+  WriteLine(File.ReadAllText(filePath));
+
+  WriteLine("Reading the compressed XML file:");
+  file = File.Open(filePath, FileMode.Open);
+  Stream decompressor;
+
+  if (useBrotli)
+  {
+    decompressor = new BrotliStream(file, CompressionMode.Decompress);
+  }
+  else
+  {
+    decompressor = new GZipStream(file, CompressionMode.Decompress);
+  } 
+
+  using (decompressor)
+  {
+    using XmlReader reader = XmlReader.Create(decompressor);
+    while (reader.Read())
+    {
+      if ((reader.NodeType == XmlNodeType.Element) && (reader.Name == "callsign"))
+      {
+        reader.Read();
+        WriteLine($"{reader.Value}");
+      }
+    }
+  }
+  WriteLine();
 }
 
 WorkWithText();
 WorkWithXml();
+WorkWithCompression(false);
+WorkWithCompression(true);
